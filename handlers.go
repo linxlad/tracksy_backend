@@ -4,6 +4,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 	r "gopkg.in/gorethink/gorethink.v3"
 	"github.com/linxlad/TraskyEA/models"
+	"time"
 )
 
 func addInterest(client *Client, data interface{}) {
@@ -13,6 +14,8 @@ func addInterest(client *Client, data interface{}) {
 		client.send <- Message{"error", err.Error()}
 		return
 	}
+
+	user.CreatedAt = time.Now()
 
 	go func() {
 		response, err := r.Branch(
