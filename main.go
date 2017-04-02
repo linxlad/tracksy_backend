@@ -7,11 +7,6 @@ import (
 	"github.com/linxlad/TraskyEA/events"
 )
 
-type User struct {
-	//Id string `gorethink:"id,omitempty"`
-	Email string `gorethink:"email"`
-}
-
 func main() {
 	session, err := r.Connect(r.ConnectOpts{
 		Address: "localhost:28015",

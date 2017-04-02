@@ -3,10 +3,11 @@ package main
 import (
 	"github.com/mitchellh/mapstructure"
 	r "gopkg.in/gorethink/gorethink.v3"
+	"github.com/linxlad/TraskyEA/models"
 )
 
 func addInterest(client *Client, data interface{}) {
-	var user User
+	var user models.EarlyAccess
 
 	if err := mapstructure.Decode(data, &user); err != nil {
 		client.send <- Message{"error", err.Error()}
