@@ -1,8 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type EarlyAccess struct {
-	Email string `gorethink:"email"`
+	Email string `valid:"email" gorethink:"email"`
 	CreatedAt time.Time `gorethink:"createdAt"`
 }
