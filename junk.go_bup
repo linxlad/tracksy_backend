@@ -1,0 +1,58 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/mitchellh/mapstructure"
+)
+
+type Message struct {
+	Name string `json:"name"`
+	Data interface{} `json:"data"`
+}
+
+type Channel struct {
+	Id string `json:"id"`
+	Name string `json:"name"`
+}
+
+func main()  {
+	// Test JSON data.
+	recRawMsg := []byte(`{"name":"channel add","data":{"name":"Hardware Support"}}`)
+
+	var recMessage Message
+	// Unmarshal JSON to the Message struct.
+	if err := json.Unmarshal(recRawMsg, &recMessage) ; err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	if recMessage.Name == "channel add" {
+		channel, err := addChannel(recMessage.Data)
+		var sendMessage Message
+		sendMessage.Name = "Channel add"
+		sendMessage.Data = channel
+		sendRawMsg, err := json.Marshal(sendMessage)
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		fmt.Printf(string(sendRawMsg))
+	}
+}
+
+func addChannel(data interface{}) (Channel, error) {
+	var channel Channel
+
+	if err := mapstructure.Decode(data, &channel) ; err != nil {
+		return channel, err
+	}
+
+	channelMap := data.(map[string]interface{})
+	channel.Name = channelMap["name"].(string)
+	channel.Id = "1"
+
+	return channel, nil
+}
